@@ -1,19 +1,21 @@
-from bs4 import BeautifulSoup
+# setup socks5 proxy, comment the settings if there is no demand of proxy
 import socks
 import socket
-
-# setup socks5 proxy
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 2912)
 socket.socket = socks.socksocket
 def getaddrinfo(*args):
     return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
 socket.getaddrinfo = getaddrinfo
 
+
+# import required libraries
+from bs4 import BeautifulSoup
 from urllib import request
 from urllib import parse
+from pathlib import Path
+
 import time
 import os
-from pathlib import Path
 
 
 # read HTML file and optimize the results
