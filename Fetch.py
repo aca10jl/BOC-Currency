@@ -18,6 +18,10 @@ import time
 import os
 
 
+# record start time
+startTime = time.time()
+
+
 # read HTML file and optimize the results
 def readHTML(url, encode = 'utf-8', form = None):
 	if form == None:
@@ -59,7 +63,7 @@ def table2csv(htmlTable, header = True, csvFile = None, writeType = 'a'):
 
 
 # save USD data into a file
-for i in range(1, 3):
+for i in range(1, 1):
 	# construct form data for properly loading HTML
 	formData = {}
 	formData['erectDate'] = ''
@@ -118,5 +122,12 @@ for i in range(1, 1):
 	time.sleep(5)
 
 
+# record end time
+endTime = time.time()
+timeUsed = endTime - startTime
+
+
+# show info after jobs are done
 print('Done!')
+print("Time used: %0.1fs" % timeUsed)
 
