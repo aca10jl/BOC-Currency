@@ -1,9 +1,11 @@
 # set working environment
+rm(list=ls())
 setwd("~/Dropbox/Apps/BOC-Currency")
+require(plotrix)
 
 # read data from CSV files
-gbp <- read.csv("GBP.csv", header = TRUE)
-usd <- read.csv("USD.csv", header = TRUE)
+gbp <- read.csv("GBP.csv", header = TRUE, stringsAsFactors = FALSE)
+usd <- read.csv("USD.csv", header = TRUE, stringsAsFactors = FALSE)
 
 # remove duplicated rows
 gbp <- gbp[!duplicated(gbp), ]
@@ -16,19 +18,24 @@ isDate <- function(mydate, date.format = "%Y-%m-%d %H:%M:%S") {
   tryCatch(!is.na(as.Date(mydate, date.format)),  
            error = function(err) {FALSE})  
 }
-if (length(which(!isDate(gbp$发布时间))) != 0) {
-  gbp$发布时间 <- as.POSIXct(gbp$发布时间[which(!isDate(gbp$发布时间))], format = "%Y.%m.%d %H:%M:%S", tz = "CST")
-  usd$发布时间 <- as.POSIXct(usd$发布时间[which(!isDate(usd$发布时间))], format = "%Y.%m.%d %H:%M:%S", tz = "CST")
+invalidDate <- which(!isDate(gbp$发布时间))
+if (length(invalidDate) > 0) {
+  gbp$发布时间[invalidDate] <- as.character(as.POSIXct(gbp$发布时间[invalidDate], format = "%Y.%m.%d %H:%M:%S", tz = "CST"))
+}
+invalidDate <- which(!isDate(usd$发布时间))
+if (length(invalidDate) > 0) {
+  usd$发布时间[invalidDate] <- as.character(as.POSIXct(usd$发布时间[invalidDate], format = "%Y.%m.%d %H:%M:%S", tz = "CST"))
 }
 gbp <- gbp[order(gbp$发布时间, decreasing = FALSE), ]
 usd <- usd[order(usd$发布时间, decreasing = FALSE), ]
 
 # plot
-png(filename = "GBP.png")
-plot(gbp$现汇卖出价, type = "l", col = "red", xlab = paste("Time from", as.character(gbp$发布时间[1]), "to", as.character(gbp$发布时间[nrow(gbp)]), sep=" "), ylab = "GBP", main = "GBP Exchange Rate (Bank of China)")
-dev.off()
-png(filename = "USD.png")
-plot(usd$现汇卖出价, type = "l", col = "blue", xlab = paste("Time from", as.character(usd$发布时间[1]), "to", as.character(usd$发布时间[nrow(usd)]), sep=" "), ylab = "USD", main = "USD Exchange Rate (Bank of China)")
+png(filename = "BOC.png")
+twoord.plot(1:nrow(gbp), gbp$现汇卖出价, 1:nrow(usd), usd$现汇卖出价, 
+            xlab = paste(as.character(gbp$发布时间[1]), "-", as.character(gbp$发布时间[nrow(gbp)]), sep="  "),
+            ylab = "GBP", rylab = "USD", lcol = 4, type = "l",
+            main = "Bank of China Exchange Rate",
+            do.first = "plot_bg();grid(col=\"white\",lty=1)")
 dev.off()
 
 # save processed data back into original files
