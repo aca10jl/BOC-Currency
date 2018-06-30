@@ -63,6 +63,8 @@ def table2csv(htmlTable, header = True, csvFile = None, writeType = 'a'):
 
 
 # save USD data into a file
+tmpTable = None
+table = None
 for i in range(1, 51):
 	# construct form data for properly loading HTML
 	formData = {}
@@ -74,7 +76,11 @@ for i in range(1, 51):
 	# seek for HTML table
 	soup = readHTML(url = "http://srh.bankofchina.com/search/whpj/search.jsp", form = formData, encode = 'utf-8')
 	div = soup.find('div', attrs = {'class':'BOC_main publish'})
-	table = div.find('table')
+	tmpTable = div.find('table')
+	if table == tmpTable:
+		break
+	else:
+		table = tmpTable
 
 	# store results into a file
 	storeData = 'USD.csv'
@@ -93,6 +99,8 @@ for i in range(1, 51):
 
 
 # save GBP data into a file
+tmpTable = None
+table = None
 for i in range(1, 51):
 	# construct form data for properly loading HTML
 	formData = {}
@@ -104,7 +112,11 @@ for i in range(1, 51):
 	# seek for HTML table
 	soup = readHTML(url = "http://srh.bankofchina.com/search/whpj/search.jsp", form = formData, encode = 'utf-8')
 	div = soup.find('div', attrs = {'class':'BOC_main publish'})
-	table = div.find('table')
+	tmpTable = div.find('table')
+	if table == tmpTable:
+		break
+	else:
+		table = tmpTable
 
 	# store results into a file
 	storeData = 'GBP.csv'
