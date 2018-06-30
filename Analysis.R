@@ -27,6 +27,8 @@ twoord.plot(1:nrow(gbp), gbp$现汇卖出价, 1:nrow(usd), usd$现汇卖出价,
 dev.off()
 
 # save processed data back into original files
+gbp <- gbp[order(gbp$发布时间, decreasing = TRUE), ]
+usd <- usd[order(usd$发布时间, decreasing = TRUE), ]
 write.csv(gbp, file = "GBP.csv", row.names = FALSE)
 write.csv(usd, file = "USD.csv", row.names = FALSE)
 
