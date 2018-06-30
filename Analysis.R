@@ -1,6 +1,6 @@
 # set working environment
 rm(list=ls())
-setwd("~/Dropbox/Apps/BOC-Currency")
+setwd("~/Dropbox/Apps/Bank-of-China-Exchange-Rate")
 require(plotrix)
 
 # read data from CSV files
