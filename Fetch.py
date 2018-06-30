@@ -63,7 +63,7 @@ def table2csv(htmlTable, header = True, csvFile = None, writeType = 'a'):
 
 
 # save USD data into a file
-for i in range(1, 1):
+for i in range(1, 51):
 	# construct form data for properly loading HTML
 	formData = {}
 	formData['erectDate'] = ''
@@ -93,7 +93,7 @@ for i in range(1, 1):
 
 
 # save GBP data into a file
-for i in range(1, 1):
+for i in range(1, 51):
 	# construct form data for properly loading HTML
 	formData = {}
 	formData['erectDate'] = ''
