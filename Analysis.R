@@ -14,18 +14,6 @@ rownames(gbp) <- 1:nrow(gbp)
 rownames(usd) <- 1:nrow(usd)
 
 # sort the two dataframe by date and time in increasing order
-# isDate <- function(mydate, date.format = "%Y-%m-%d %H:%M:%S") {
-#   tryCatch(!is.na(as.Date(mydate, date.format)),  
-#            error = function(err) {FALSE})  
-# }
-# invalidDate <- which(!isDate(gbp$发布时间))
-# if (length(invalidDate) > 0) {
-#   gbp$发布时间[invalidDate] <- as.character(as.POSIXct(gbp$发布时间[invalidDate], format = "%Y.%m.%d %H:%M:%S", tz = "CST"))
-# }
-# invalidDate <- which(!isDate(usd$发布时间))
-# if (length(invalidDate) > 0) {
-#   usd$发布时间[invalidDate] <- as.character(as.POSIXct(usd$发布时间[invalidDate], format = "%Y.%m.%d %H:%M:%S", tz = "CST"))
-# }
 gbp <- gbp[order(gbp$发布时间, decreasing = FALSE), ]
 usd <- usd[order(usd$发布时间, decreasing = FALSE), ]
 
