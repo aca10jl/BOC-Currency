@@ -1,7 +1,7 @@
 # [Bank of China Exchange Rate](http://www.boc.cn/sourcedb/whpj/)
 
 ## Requirements
-Python3:
+### Python3:
 * bs4
 * urllib
 * pathlib
@@ -11,7 +11,8 @@ Python3:
 * socks [optional]
 * socket [optional]
 
-R:
+
+### R:
 * plotrix
 
 
