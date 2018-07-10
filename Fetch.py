@@ -1,11 +1,11 @@
-# setup socks5 proxy, comment the settings if there is no demand of proxy
-import socks
-import socket
-socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 2912)
-socket.socket = socks.socksocket
-def getaddrinfo(*args):
-    return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
-socket.getaddrinfo = getaddrinfo
+# setup socks5 proxy, uncomment if necessary
+# import socks
+# import socket
+# socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 2912)
+# socket.socket = socks.socksocket
+# def getaddrinfo(*args):
+#     return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
+# socket.getaddrinfo = getaddrinfo
 
 
 # import required libraries
@@ -62,76 +62,49 @@ def table2csv(htmlTable, header = True, csvFile = None, writeType = 'a'):
 	return csvTable
 
 
-# save USD data into a file
-tmpTable = None
-table = None
-for i in range(1, 51):
-	# construct form data for properly loading HTML
-	formData = {}
-	formData['erectDate'] = ''
-	formData['nothing'] = ''
-	formData['pjname'] = '1316' # USD=1316, GBP=1314
-	formData['page'] = str(i)
-
-	# seek for HTML table
-	soup = readHTML(url = "http://srh.bankofchina.com/search/whpj/search.jsp", form = formData, encode = 'utf-8')
-	div = soup.find('div', attrs = {'class':'BOC_main publish'})
-	tmpTable = div.find('table')
-	if table == tmpTable:
-		break
-	else:
-		table = tmpTable
-
-	# store results into a file
-	storeData = 'USD.csv'
-	tableHeader = False
-	if Path(storeData).exists():
-		if os.stat(storeData).st_size == 0:
-			tableHeader = True
+# save currency data into a file
+def retriveData(currency = 'GBP', pages = 51, delay = 5):
+	tmp = None
+	table = None
+	for i in range(1, pages):
+		# construct form data for properly loading HTML
+		formData = {}
+		formData['erectDate'] = ''
+		formData['nothing'] = ''
+		if currency == 'USD':  # USD=1316, GBP=1314
+			formData['pjname'] = '1316'
+		elif currency == 'GBP':
+			formData['pjname'] = '1314'
 		else:
-			tableHeader = False
-	else:
-		tableHeader = True
-	table2csv(table, header = tableHeader, csvFile = storeData)
+			break
+		formData['page'] = str(i)
 
-	# add a delay into the loop to prevent from being banned
-	time.sleep(5)
-
-
-# save GBP data into a file
-tmpTable = None
-table = None
-for i in range(1, 51):
-	# construct form data for properly loading HTML
-	formData = {}
-	formData['erectDate'] = ''
-	formData['nothing'] = ''
-	formData['pjname'] = '1314' # USD=1316, GBP=1314
-	formData['page'] = str(i)
-
-	# seek for HTML table
-	soup = readHTML(url = "http://srh.bankofchina.com/search/whpj/search.jsp", form = formData, encode = 'utf-8')
-	div = soup.find('div', attrs = {'class':'BOC_main publish'})
-	tmpTable = div.find('table')
-	if table == tmpTable:
-		break
-	else:
-		table = tmpTable
-
-	# store results into a file
-	storeData = 'GBP.csv'
-	tableHeader = False
-	if Path(storeData).exists():
-		if os.stat(storeData).st_size == 0:
-			tableHeader = True
+		# seek for HTML table
+		soup = readHTML(url = "http://srh.bankofchina.com/search/whpj/search.jsp", form = formData, encode = 'utf-8')
+		div = soup.find('div', attrs = {'class':'BOC_main publish'})
+		tmp = div.find('table')
+		if table == tmp:
+			break
 		else:
-			tableHeader = False
-	else:
-		tableHeader = True
-	table2csv(table, header = tableHeader, csvFile = storeData)
+			table = tmp
 
-	# add a delay into the loop to prevent from being banned
-	time.sleep(5)
+		# store results into a file
+		storeData = 'Data/' + currency + '.csv'
+		tableHeader = False
+		if Path(storeData).exists():
+			if os.stat(storeData).st_size == 0:
+				tableHeader = True
+			else:
+				tableHeader = False
+		else:
+			tableHeader = True
+		table2csv(table, header = tableHeader, csvFile = storeData)
+
+		# add a delay into the loop to prevent from being banned
+		time.sleep(delay)
+
+retriveData('USD')
+retriveData('GBP')
 
 
 # record end time
