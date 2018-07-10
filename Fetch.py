@@ -14,6 +14,7 @@ from urllib import request
 from urllib import parse
 from pathlib import Path
 
+import subprocess
 import time
 import os
 
@@ -105,6 +106,10 @@ def retriveData(currency = 'GBP', pages = 51, delay = 5):
 
 retriveData('USD')
 retriveData('GBP')
+
+
+# run R script to optimize data and present such data in a figure
+subprocess.call (["/usr/bin/Rscript", "--vanilla", "Analysis.R"])
 
 
 # record end time
