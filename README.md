@@ -2,10 +2,17 @@
 
 ## Requirements
 Python3:
-    bs4, urllib, pathlib, subprocess, time, os
-    optional: socks, socket
+* bs4
+* urllib
+* pathlib
+* subprocess
+* time
+* os
+* socks [optional]
+* socket [optional]
+
 R:
-    plotrix
+* plotrix
 
 
 ## Usage
