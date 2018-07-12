@@ -112,7 +112,7 @@ retriveData('GBP')
 # run R script to optimize data and present such data in a figure
 if not os.path.exists('Figure'):
 	os.makedirs('Figure')
-subprocess.call (["/usr/bin/Rscript", "--vanilla", "Analysis.R"])
+subprocess.call (["/usr/bin/Rscript", "--vanilla", "Analysis.R"]) # currently only support GBP & USD, extend it if you need
 
 
 # record end time
