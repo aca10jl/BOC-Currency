@@ -64,18 +64,17 @@ def table2csv(htmlTable, header = True, csvFile = None, writeType = 'a'):
 
 
 # save currency data into a file
-def retriveData(currency = 'GBP', pages = 51, delay = 5):
+def retriveData(currency = 'USD', pages = 50, delay = 5):
+	BOCC = {'GBP': '1314', 'HKD': '1315', 'USD': '1316', 'CHF': '1317', 'DM': '1318', 'FF': '1319', 'SGD': '1375', 'SEK': '1320', 'DKK': '1321', 'NOK': '1322', 'JPY': '1323', 'CAD': '1324', 'AUD': '1325', 'EUR': '1326', 'MOP': '1327', 'PHP': '1328', 'THB': '1329', 'NZD': '1330', 'KRW': '1331', 'RUB': '1843', 'MYR': '2890', 'TWD': '2895', 'ESP': '1370', 'ITL': '1371', 'NLG': '1372', 'BEF': '1373', 'FIM': '1374', 'IDR': '3030', 'BRL': '3253', 'AED': '3899', 'INR': '3900', 'ZAR': '3901', 'SAR': '4418', 'YTL': '4560'}
 	tmp = None
 	table = None
-	for i in range(1, pages):
+	for i in range(1, pages + 1):
 		# construct form data for properly loading HTML
 		formData = {}
 		formData['erectDate'] = ''
 		formData['nothing'] = ''
-		if currency == 'USD':  # USD=1316, GBP=1314
-			formData['pjname'] = '1316'
-		elif currency == 'GBP':
-			formData['pjname'] = '1314'
+		if currency in BOCC:
+			formData['pjname'] = BOCC[currency]
 		else:
 			break
 		formData['page'] = str(i)
@@ -90,6 +89,8 @@ def retriveData(currency = 'GBP', pages = 51, delay = 5):
 			table = tmp
 
 		# store results into a file
+		if not os.path.exists('Data'):
+			os.makedirs('Data')
 		storeData = 'Data/' + currency + '.csv'
 		tableHeader = False
 		if Path(storeData).exists():
@@ -104,11 +105,13 @@ def retriveData(currency = 'GBP', pages = 51, delay = 5):
 		# add a delay into the loop to prevent from being banned
 		time.sleep(delay)
 
-retriveData('USD')
-retriveData('GBP')
+retriveData('USD', pages = 1)
+retriveData('GBP', pages = 1)
 
 
 # run R script to optimize data and present such data in a figure
+if not os.path.exists('Figure'):
+	os.makedirs('Figure')
 subprocess.call (["/usr/bin/Rscript", "--vanilla", "Analysis.R"])
 
 
