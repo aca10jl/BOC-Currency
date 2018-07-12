@@ -105,8 +105,8 @@ def retriveData(currency = 'USD', pages = 50, delay = 5):
 		# add a delay into the loop to prevent from being banned
 		time.sleep(delay)
 
-retriveData('USD', pages = 1)
-retriveData('GBP', pages = 1)
+retriveData('USD')
+retriveData('GBP')
 
 
 # run R script to optimize data and present such data in a figure
