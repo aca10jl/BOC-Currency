@@ -3,12 +3,14 @@
 
 ## Requirements
 ### Python3:
-* bs4
-* urllib
+* beautifulsoup4
+* urllib-s3
 * pathlib
+
 * subprocess
 * time
 * os
+
 * socks [optional]
 * socket [optional]
 
